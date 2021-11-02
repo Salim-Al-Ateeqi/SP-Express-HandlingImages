@@ -4,6 +4,9 @@ const connectDB = require("./db/database");
 const morgan = require("morgan");
 const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
+const categoriesRoutes = require("./apis/categories/routes");
+const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
@@ -18,9 +21,12 @@ app.use((req, res, next) => {
     res.status(400).json({ message: "I HATE BROCCOLI!! KEEFY! " });
   else next();
 });
+app.use(cors());
 
 // Routes
 app.use("/api/products", productRoutes);
+app.use("/api/categories", categoriesRoutes);
+app.use("/media", express.static(path.join(__dirname, "media")));
 
 app.use((req, res, next) => {
   res.status(404).json({ message: "Path not found" });

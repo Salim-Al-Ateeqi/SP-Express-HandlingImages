@@ -1,9 +1,10 @@
+const mongooseSlugPlugin = require("mongoose-slug-plugin");
 const mongoose = require("mongoose");
+
 const CategorySchema = new mongoose.Schema(
   {
     name: String,
     image: String,
-
     products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
   },
   { timestamps: true }

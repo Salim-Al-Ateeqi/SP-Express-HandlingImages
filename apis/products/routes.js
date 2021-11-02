@@ -1,5 +1,4 @@
 const express = require("express");
-const Product = require("../../db/models/Product");
 const {
   productListFetch,
   productCreate,
@@ -30,10 +29,7 @@ router.get("/", productListFetch);
 
 router.get("/:productId", productDetailFetch);
 
-router.put(
-  "/:productId",
-  ("/:productId", upload.single("image"), productUpdate)
-);
+router.put("/:productId", upload.single("image"), productUpdate);
 
 router.delete("/:productId", productDelete);
 
