@@ -24,6 +24,10 @@ exports.productDetailFetch = async (req, res, next) =>
 
 exports.productCreate = async (req, res, next) => {
   try {
+    const formData = new FormData();
+    for (const key in newProduct) formData.append(key, newProduct[key]);
+    const res = await axios.post("http://localhost:8000/products", formData);
+    this.products.push(res.data);
     if (req.file) {
       req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
     }
