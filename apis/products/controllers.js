@@ -22,30 +22,16 @@ exports.productListFetch = async (req, res, next) => {
 exports.productDetailFetch = async (req, res, next) =>
   res.status(200).json(req.product);
 
-exports.productCreate = async (req, res, next) => {
+exports.productUpdate = async (req, res, next) => {
   try {
-    const formData = new FormData();
-    for (const key in newProduct) formData.append(key, newProduct[key]);
-    const res = await axios.post("http://localhost:8000/products", formData);
-    this.products.push(res.data);
     if (req.file) {
-      req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
+      req.body.image = `${req.protocol}://${req.get("host")}/media/${
+        req.file.filename
+      }`;
     }
-    const newProduct = await Product.create(req.body);
-    res.status(201).json(newProduct);
-  } catch (error) {
-    next(error);
-  }
-};
-
-exports.productUpdate = async (updatedProduct) => {
-  try {
-    const formData = new FormData();
-    for (const key in updatedProduct) formData.append(key, updatedProduct[key]);
-    const res = await axios.put(
-      `http://localhost:8000/products/${updatedProduct.id}`,
-      formData
-    );
+    await req.product.update(req.body);
+    const updatedProduct = await Product.findById(req.product._id);
+    res.status(200).json(updatedProduct);
   } catch (error) {
     next(error);
   }
