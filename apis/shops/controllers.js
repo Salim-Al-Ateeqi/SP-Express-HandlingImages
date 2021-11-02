@@ -22,6 +22,10 @@ exports.shopCreate = async (req, res) => {
 exports.productCreate = async (req, res) => {
   try {
     const shopId = req.params.shopId;
+    console.log(
+      "🚀 ~ file: controllers.js ~ line 26 ~ exports.productCreate= ~ req.body",
+      req.body
+    );
     req.body = { ...req.body, shop: shopId };
     const newProduct = await Product.create(req.body);
     await Shop.findOneAndUpdate(
