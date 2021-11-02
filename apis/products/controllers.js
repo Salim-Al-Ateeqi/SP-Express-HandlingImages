@@ -38,13 +38,14 @@ exports.productCreate = async (req, res, next) => {
   }
 };
 
-exports.productUpdate = async (req, res, next) => {
+exports.productUpdate = async (updatedProduct) => {
   try {
-    if (req.file) {
-      req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
-    }
-    await req.product.update(req.body);
-    res.status(204).end();
+    const formData = new FormData();
+    for (const key in updatedProduct) formData.append(key, updatedProduct[key]);
+    const res = await axios.put(
+      `http://localhost:8000/products/${updatedProduct.id}`,
+      formData
+    );
   } catch (error) {
     next(error);
   }
