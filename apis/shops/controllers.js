@@ -19,6 +19,15 @@ exports.shopCreate = async (req, res) => {
   }
 };
 
+exports.shopDelete = async (req, res, next) => {
+  try {
+    await req.Shop.remove();
+    res.status(204).end();
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.productCreate = async (req, res) => {
   try {
     if (req.file) {

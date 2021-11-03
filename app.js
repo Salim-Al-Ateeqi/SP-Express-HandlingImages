@@ -7,6 +7,7 @@ const errorHandler = require("./middleware/errorHandler");
 const shopsRoutes = require("./apis/shops/routes");
 const cors = require("cors");
 const path = require("path");
+const userRoutes = require("./apis/users/routes");
 
 const app = express();
 
