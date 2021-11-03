@@ -21,11 +21,10 @@ exports.shopCreate = async (req, res) => {
 
 exports.productCreate = async (req, res) => {
   try {
+    if (req.file) {
+      req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
+    }
     const shopId = req.params.shopId;
-    console.log(
-      "🚀 ~ file: controllers.js ~ line 26 ~ exports.productCreate= ~ req.body",
-      req.body
-    );
     req.body = { ...req.body, shop: shopId };
     const newProduct = await Product.create(req.body);
     await Shop.findOneAndUpdate(
