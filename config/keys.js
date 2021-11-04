@@ -1,6 +1,6 @@
-// const key = {
-//   JWT_SECRET: "SECRETPASSWORD",
-//   JWT_EXPIRATION_MS: 600000,
-// };
+const keys = {
+  JWT_SECRET: "supersecretkey",
+  JWT_EXPIRATION_MS: 900000,
+};
 
-// module.exports = key;
+module.exports = keys;

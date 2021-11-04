@@ -1,13 +1,15 @@
 const express = require("express");
-const productRoutes = require("./apis/products/routes");
 const connectDB = require("./db/database");
 const morgan = require("morgan");
 const logger = require("./middleware/logger");
 const errorHandler = require("./middleware/errorHandler");
-const shopsRoutes = require("./apis/shops/routes");
 const cors = require("cors");
 const path = require("path");
+const productRoutes = require("./apis/products/routes");
+const shopsRoutes = require("./apis/shops/routes");
 const userRoutes = require("./apis/users/routes");
+const passport = require("passport");
+const { localStrategy } = require("./middleware/passport");
 
 const app = express();
 
@@ -24,10 +26,15 @@ app.use((req, res, next) => {
 });
 app.use(cors());
 
+//Passport
+app.use(passport.initialize());
+passport.use(localStrategy);
+
 // Routes
 app.use("/api/products", productRoutes);
 app.use("/api/shops", shopsRoutes);
 app.use("/media", express.static(path.join(__dirname, "media")));
+app.use("/apis", userRoutes);
 
 app.use((req, res, next) => {
   res.status(404).json({ message: "Path not found" });
