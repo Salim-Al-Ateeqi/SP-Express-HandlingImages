@@ -12,15 +12,6 @@ exports.localStrategy = new LocalStrategy(async (username, password, done) => {
 
     if (passwordsMatch) return done(null, user);
     return done(null, false);
-
-    // if (user) {
-    //   const passwordsMatch = await bcrypt.compare(password, user.password);
-    //   if (passwordsMatch) {
-    //     return done(null, user);
-    //   }
-    // } else {
-    //   done(null, false);
-    // }
   } catch (error) {
     done(error);
   }
