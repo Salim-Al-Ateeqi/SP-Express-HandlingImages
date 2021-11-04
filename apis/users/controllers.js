@@ -3,23 +3,23 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET, JWT_EXPIRATION_MS } = require("../../config/keys");
 
+const generateToken = (user) => {
+  const payload = {
+    id: user._id,
+    username: user.username,
+    exp: Date.now() + JWT_EXPIRATION_MS,
+  };
+  const token = jwt.sign(payload, JWT_SECRET);
+  return token;
+};
+
 exports.signup = async (req, res, next) => {
   try {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
     req.body.password = hashedPassword;
 
-    const newUser = User.create(req.body);
-
-    const generateToken = (user) => {
-      const payload = {
-        id: user._id,
-        username: user.username,
-        exp: Date.now() + JWT_EXPIRATION_MS,
-      };
-      const token = jwt.sign(payload, JWT_SECRET);
-      return token;
-    };
+    const newUser = await User.create(req.body);
 
     const token = generateToken(newUser);
 
@@ -30,9 +30,6 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.signin = async (req, res, next) => {
-  try {
-    console.log(res);
-  } catch (error) {
-    next(error);
-  }
+  const token = await generateToken(req.user);
+  res.json({ token });
 };
