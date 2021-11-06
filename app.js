@@ -9,7 +9,7 @@ const productRoutes = require("./apis/products/routes");
 const shopsRoutes = require("./apis/shops/routes");
 const userRoutes = require("./apis/users/routes");
 const passport = require("passport");
-const { localStrategy } = require("./middleware/passport");
+const { localStrategy, jwtStrategy } = require("./middleware/passport");
 
 const app = express();
 
@@ -29,6 +29,7 @@ app.use(cors());
 //Passport
 app.use(passport.initialize());
 passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 // Routes
 app.use("/api/products", productRoutes);

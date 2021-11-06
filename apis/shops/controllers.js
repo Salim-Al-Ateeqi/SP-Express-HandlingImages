@@ -12,6 +12,10 @@ exports.getShops = async (req, res) => {
 
 exports.shopCreate = async (req, res) => {
   try {
+    if (req.file) {
+      req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
+    }
+    req.body.owner = req.user._id;
     const newShop = await Shop.create(req.body);
     return res.status(201).json(newShop);
   } catch (error) {
