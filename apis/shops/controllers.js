@@ -17,6 +17,10 @@ exports.shopCreate = async (req, res) => {
     }
     req.body.owner = req.user._id;
     const newShop = await Shop.create(req.body);
+    await newShop.populate({
+      path: "owner",
+      select: "username",
+    });
     return res.status(201).json(newShop);
   } catch (error) {
     return res.status(500).json({ message: error.message });
